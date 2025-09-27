@@ -1,0 +1,515 @@
+{
+  "users": [
+    {
+      "id": "user_001",
+      "profile": {
+        "name": "Rahul Sharma",
+        "age": 28,
+        "location": "Mumbai, Maharashtra",
+        "interests": ["technology", "programming", "gaming", "fitness"],
+        "occupation": "Software Developer",
+        "income_range": "high"
+      },
+      "behavior": {
+        "searches": [
+          { "query": "laptop", "timestamp": 1703001600000, "results_clicked": 3 },
+          { "query": "programming books", "timestamp": 1703088000000, "results_clicked": 2 },
+          { "query": "wireless headphones", "timestamp": 1703174400000, "results_clicked": 1 },
+          { "query": "gaming mouse", "timestamp": 1703260800000, "results_clicked": 2 }
+        ],
+        "clicks": [
+          { "productId": 9, "category": "electronics", "timestamp": 1703002100000, "duration": 35000 },
+          { "productId": 15, "category": "clothing", "timestamp": 1703088500000, "duration": 22000 },
+          { "productId": 14, "category": "books", "timestamp": 1703174900000, "duration": 48000 },
+          { "productId": 2, "category": "electronics", "timestamp": 1703261300000, "duration": 41000 }
+        ],
+        "purchases": [
+          { "productId": 15, "price": 899, "timestamp": 1703088700000 },
+          { "productId": 14, "price": 2299, "timestamp": 1703175100000 }
+        ],
+        "timeSpent": {
+          "books": 85000,
+          "electronics": 76000,
+          "clothing": 45000,
+          "sports": 18000,
+          "home": 12000
+        },
+        "sessionCount": 9,
+        "totalSessionTime": 2160000,
+        "bounceRate": 0.28
+      },
+      "preferences": {
+        "categories": {
+          "books": 0.7,
+          "electronics": 0.6,
+          "clothing": 0.8,
+          "sports": 0.3,
+          "home": 0.2
+        },
+        "priceRange": {
+          "min": 500,
+          "max": 15000,
+          "preferred": 3000
+        },
+        "brands": {
+          "Samsung": 0.6,
+          "Uniqlo": 0.8,
+          "O'Reilly Media": 0.7,
+          "Sony": 0.5,
+          "Addison-Wesley": 0.6
+        }
+      },
+      "aiProfile": {
+        "techSavvy": 0.6,
+        "priceSensitive": 0.8,
+        "brandLoyal": 0.4,
+        "impulsive": 0.6,
+        "socialInfluenced": 0.8,
+        "researchOriented": 0.5,
+        "qualityFocused": 0.6
+      },
+      "recommendations": {
+        "viewed": 28,
+        "clicked": 7,
+        "purchased": 2,
+        "accuracy": 0.79,
+        "satisfaction": 0.84
+      }
+    },
+    {
+      "id": "user_005",
+      "profile": {
+        "name": "Vikram Singh",
+        "age": 31,
+        "location": "Hyderabad, Telangana",
+        "interests": ["fitness", "sports", "technology", "health"],
+        "occupation": "Business Analyst",
+        "income_range": "medium"
+      },
+      "behavior": {
+        "searches": [
+          { "query": "running shoes", "timestamp": 1703002000000, "results_clicked": 3 },
+          { "query": "dumbbells", "timestamp": 1703088400000, "results_clicked": 2 },
+          { "query": "fitness tracker", "timestamp": 1703174800000, "results_clicked": 4 },
+          { "query": "protein powder", "timestamp": 1703261200000, "results_clicked": 1 }
+        ],
+        "clicks": [
+          { "productId": 4, "category": "clothing", "timestamp": 1703002200000, "duration": 43000 },
+          { "productId": 11, "category": "clothing", "timestamp": 1703002500000, "duration": 37000 },
+          { "productId": 17, "category": "sports", "timestamp": 1703088600000, "duration": 62000 },
+          { "productId": 13, "category": "sports", "timestamp": 1703175000000, "duration": 29000 }
+        ],
+        "purchases": [
+          { "productId": 11, "price": 16999, "timestamp": 1703002700000 },
+          { "productId": 17, "price": 12999, "timestamp": 1703088800000 }
+        ],
+        "timeSpent": {
+          "sports": 125000,
+          "clothing": 95000,
+          "electronics": 45000,
+          "home": 25000,
+          "books": 15000
+        },
+        "sessionCount": 11,
+        "totalSessionTime": 3240000,
+        "bounceRate": 0.18
+      },
+      "preferences": {
+        "categories": {
+          "sports": 0.9,
+          "clothing": 0.7,
+          "electronics": 0.4,
+          "home": 0.3,
+          "books": 0.2
+        },
+        "priceRange": {
+          "min": 1000,
+          "max": 50000,
+          "preferred": 15000
+        },
+        "brands": {
+          "Adidas": 0.9,
+          "Nike": 0.8,
+          "PowerBlock": 0.7,
+          "FitBeast": 0.6,
+          "Apple": 0.5
+        }
+      },
+      "aiProfile": {
+        "techSavvy": 0.6,
+        "priceSensitive": 0.5,
+        "brandLoyal": 0.8,
+        "impulsive": 0.4,
+        "socialInfluenced": 0.5,
+        "researchOriented": 0.7,
+        "qualityFocused": 0.9
+      },
+      "recommendations": {
+        "viewed": 38,
+        "clicked": 11,
+        "purchased": 2,
+        "accuracy": 0.85,
+        "satisfaction": 0.89
+      }
+    }
+  ],
+  "analytics": {
+    "totalUsers": 5,
+    "activeUsers": 4,
+    "avgSessionTime": 3240000,
+    "avgBounceRate": 0.19,
+    "totalPurchases": 11,
+    "totalRevenue": 81292,
+    "conversionRate": 0.23,
+    "categoryPopularity": {
+      "electronics": 0.72,
+      "sports": 0.68,
+      "home": 0.54,
+      "books": 0.48,
+      "clothing": 0.44
+    },
+    "brandPopularity": {
+      "Apple": 0.72,
+      "Xiaomi": 0.71,
+      "Adidas": 0.80,
+      "Nike": 0.65,
+      "Samsung": 0.60,
+      "Sony": 0.60,
+      "Philips": 0.70,
+      "Manduka": 0.80,
+      "Logitech": 0.80,
+      "Uniqlo": 0.80
+    },
+    "priceRanges": {
+      "under_5000": 0.35,
+      "5000_20000": 0.45,
+      "20000_50000": 0.15,
+      "above_50000": 0.05
+    },
+    "searchTrends": [
+      { "query": "laptop", "frequency": 12, "trending": true },
+      { "query": "headphones", "frequency": 8, "trending": false },
+      { "query": "books", "frequency": 6, "trending": true },
+      { "query": "fitness", "frequency": 7, "trending": true },
+      { "query": "smart home", "frequency": 5, "trending": true }
+    ],
+    "aiPerformance": {
+      "avgAccuracy": 0.84,
+      "avgSatisfaction": 0.89,
+      "improvementRate": 0.12,
+      "modelVersion": "v2.3",
+      "lastUpdated": 1703347200000
+    }
+  },
+  "segments": {
+    "tech_enthusiasts": {
+      "users": ["user_001", "user_003"],
+      "characteristics": {
+        "techSavvy": 0.85,
+        "avgSpending": 45000,
+        "preferredCategories": ["electronics", "home"],
+        "brandLoyalty": 0.65
+      }
+    },
+    "fitness_focused": {
+      "users": ["user_002", "user_005"],
+      "characteristics": {
+        "healthConscious": 0.9,
+        "avgSpending": 12000,
+        "preferredCategories": ["sports", "clothing"],
+        "brandLoyalty": 0.75
+      }
+    },
+    "budget_conscious": {
+      "users": ["user_004"],
+      "characteristics": {
+        "priceSensitive": 0.8,
+        "avgSpending": 3500,
+        "preferredCategories": ["books", "clothing"],
+        "brandLoyalty": 0.4
+      }
+    },
+    "home_improvers": {
+      "users": ["user_003"],
+      "characteristics": {
+        "smartHomeInterested": 0.9,
+        "avgSpending": 32000,
+        "preferredCategories": ["home", "electronics"],
+        "brandLoyalty": 0.7
+      }
+    }
+  },
+  "realTimeData": {
+    "currentActiveUsers": 3,
+    "lastHourPurchases": 2,
+    "lastHourSearches": 15,
+    "lastHourClicks": 28,
+    "trending": {
+      "categories": ["electronics", "sports"],
+      "products": [1, 7, 11, 17],
+      "searches": ["gaming", "fitness", "smart home"]
+    },
+    "alerts": [
+      {
+        "type": "high_engagement",
+        "message": "User engagement increased by 15% in the last hour",
+        "timestamp": 1703347500000
+      },
+      {
+        "type": "category_trend", 
+        "message": "Electronics category showing 25% increase in clicks",
+        "timestamp": 1703347200000
+      }
+    ]
+  },
+  "recommendations": {
+    "globalTrends": [
+      "Smart home devices gaining popularity",
+      "Fitness equipment demand increasing",
+      "Programming books consistently popular",
+      "Premium audio products trending",
+      "Sustainable products preferred"
+    ],
+    "seasonalFactors": {
+      "winter": ["fitness equipment", "air purifiers", "books"],
+      "summer": ["sports wear", "cooling devices", "outdoor gear"],
+      "festive": ["electronics", "premium brands", "gift items"]
+    },
+    "aiInsights": [
+      "Users with high tech-savvy scores prefer premium electronics",
+      "Price-sensitive users respond well to discount notifications",
+      "Brand-loyal users need fewer recommendations but higher accuracy",
+      "Research-oriented users spend more time on product pages",
+      "Social-influenced users prefer trending and popular items"
+    ]
+  }
+} "productId": 1, "category": "electronics", "timestamp": 1703001800000, "duration": 45000 },
+          { "productId": 7, "category": "electronics", "timestamp": 1703002000000, "duration": 32000 },
+          { "productId": 3, "category": "books", "timestamp": 1703088200000, "duration": 28000 },
+          { "productId": 8, "category": "electronics", "timestamp": 1703260900000, "duration": 67000 }
+        ],
+        "purchases": [
+          { "productId": 3, "price": 1599, "timestamp": 1703088400000 },
+          { "productId": 8, "price": 7999, "timestamp": 1703261000000 }
+        ],
+        "timeSpent": {
+          "electronics": 180000,
+          "books": 45000,
+          "clothing": 12000,
+          "home": 8000,
+          "sports": 15000
+        },
+        "sessionCount": 12,
+        "totalSessionTime": 3600000,
+        "bounceRate": 0.15
+      },
+      "preferences": {
+        "categories": {
+          "electronics": 0.8,
+          "books": 0.6,
+          "clothing": 0.2,
+          "home": 0.3,
+          "sports": 0.4
+        },
+        "priceRange": {
+          "min": 1000,
+          "max": 200000,
+          "preferred": 50000
+        },
+        "brands": {
+          "Apple": 0.9,
+          "Sony": 0.7,
+          "Samsung": 0.6,
+          "Logitech": 0.8,
+          "Nike": 0.5
+        }
+      },
+      "aiProfile": {
+        "techSavvy": 0.9,
+        "priceSensitive": 0.3,
+        "brandLoyal": 0.7,
+        "impulsive": 0.4,
+        "socialInfluenced": 0.2,
+        "researchOriented": 0.8,
+        "qualityFocused": 0.9
+      },
+      "recommendations": {
+        "viewed": 45,
+        "clicked": 12,
+        "purchased": 2,
+        "accuracy": 0.87,
+        "satisfaction": 0.91
+      }
+    },
+    {
+      "id": "user_002", 
+      "profile": {
+        "name": "Priya Patel",
+        "age": 24,
+        "location": "Pune, Maharashtra",
+        "interests": ["fitness", "wellness", "books", "home-decor"],
+        "occupation": "Marketing Manager",
+        "income_range": "medium"
+      },
+      "behavior": {
+        "searches": [
+          { "query": "yoga mat", "timestamp": 1703001700000, "results_clicked": 2 },
+          { "query": "fitness equipment", "timestamp": 1703088100000, "results_clicked": 4 },
+          { "query": "self-help books", "timestamp": 1703174500000, "results_clicked": 3 },
+          { "query": "air purifier", "timestamp": 1703260900000, "results_clicked": 1 }
+        ],
+        "clicks": [
+          { "productId": 6, "category": "sports", "timestamp": 1703001900000, "duration": 38000 },
+          { "productId": 13, "category": "sports", "timestamp": 1703088300000, "duration": 55000 },
+          { "productId": 12, "category": "home", "timestamp": 1703261100000, "duration": 42000 },
+          { "productId": 17, "category": "sports", "timestamp": 1703347400000, "duration": 29000 }
+        ],
+        "purchases": [
+          { "productId": 6, "price": 3999, "timestamp": 1703002100000 },
+          { "productId": 13, "price": 2499, "timestamp": 1703088500000 }
+        ],
+        "timeSpent": {
+          "sports": 145000,
+          "home": 68000,
+          "books": 35000,
+          "electronics": 22000,
+          "clothing": 18000
+        },
+        "sessionCount": 8,
+        "totalSessionTime": 2880000,
+        "bounceRate": 0.22
+      },
+      "preferences": {
+        "categories": {
+          "sports": 0.9,
+          "home": 0.6,
+          "books": 0.5,
+          "electronics": 0.3,
+          "clothing": 0.4
+        },
+        "priceRange": {
+          "min": 500,
+          "max": 25000,
+          "preferred": 8000
+        },
+        "brands": {
+          "Manduka": 0.8,
+          "Philips": 0.6,
+          "Xiaomi": 0.5,
+          "FitBeast": 0.7,
+          "PowerBlock": 0.6
+        }
+      },
+      "aiProfile": {
+        "techSavvy": 0.5,
+        "priceSensitive": 0.6,
+        "brandLoyal": 0.5,
+        "impulsive": 0.3,
+        "socialInfluenced": 0.7,
+        "researchOriented": 0.6,
+        "qualityFocused": 0.8
+      },
+      "recommendations": {
+        "viewed": 32,
+        "clicked": 8,
+        "purchased": 2,
+        "accuracy": 0.82,
+        "satisfaction": 0.88
+      }
+    },
+    {
+      "id": "user_003",
+      "profile": {
+        "name": "Amit Kumar",
+        "age": 35,
+        "location": "Delhi, Delhi",
+        "interests": ["smart-home", "technology", "books", "photography"],
+        "occupation": "Project Manager", 
+        "income_range": "high"
+      },
+      "behavior": {
+        "searches": [
+          { "query": "smart camera", "timestamp": 1703001800000, "results_clicked": 2 },
+          { "query": "robot vacuum", "timestamp": 1703088200000, "results_clicked": 3 },
+          { "query": "smart lights", "timestamp": 1703174600000, "results_clicked": 2 },
+          { "query": "air purifier", "timestamp": 1703261000000, "results_clicked": 1 }
+        ],
+        "clicks": [
+          { "productId": 5, "category": "home", "timestamp": 1703002000000, "duration": 52000 },
+          { "productId": 16, "category": "home", "timestamp": 1703088400000, "duration": 78000 },
+          { "productId": 19, "category": "home", "timestamp": 1703174800000, "duration": 34000 },
+          { "productId": 12, "category": "home", "timestamp": 1703261200000, "duration": 41000 }
+        ],
+        "purchases": [
+          { "productId": 5, "price": 8999, "timestamp": 1703002200000 },
+          { "productId": 16, "price": 18999, "timestamp": 1703088600000 },
+          { "productId": 19, "price": 3999, "timestamp": 1703175000000 }
+        ],
+        "timeSpent": {
+          "home": 245000,
+          "electronics": 89000,
+          "books": 23000,
+          "sports": 12000,
+          "clothing": 8000
+        },
+        "sessionCount": 15,
+        "totalSessionTime": 4320000,
+        "bounceRate": 0.12
+      },
+      "preferences": {
+        "categories": {
+          "home": 0.9,
+          "electronics": 0.7,
+          "books": 0.4,
+          "sports": 0.2,
+          "clothing": 0.1
+        },
+        "priceRange": {
+          "min": 2000,
+          "max": 100000,
+          "preferred": 25000
+        },
+        "brands": {
+          "Xiaomi": 0.9,
+          "Philips": 0.8,
+          "Govee": 0.6,
+          "Apple": 0.7,
+          "Samsung": 0.6
+        }
+      },
+      "aiProfile": {
+        "techSavvy": 0.8,
+        "priceSensitive": 0.4,
+        "brandLoyal": 0.6,
+        "impulsive": 0.5,
+        "socialInfluenced": 0.3,
+        "researchOriented": 0.9,
+        "qualityFocused": 0.8
+      },
+      "recommendations": {
+        "viewed": 52,
+        "clicked": 15,
+        "purchased": 3,
+        "accuracy": 0.89,
+        "satisfaction": 0.93
+      }
+    },
+    {
+      "id": "user_004",
+      "profile": {
+        "name": "Sneha Joshi",
+        "age": 22,
+        "location": "Bangalore, Karnataka",
+        "interests": ["fashion", "lifestyle", "music", "books"],
+        "occupation": "Student",
+        "income_range": "low"
+      },
+      "behavior": {
+        "searches": [
+          { "query": "earbuds", "timestamp": 1703001900000, "results_clicked": 4 },
+          { "query": "t-shirt", "timestamp": 1703088300000, "results_clicked": 3 },
+          { "query": "books", "timestamp": 1703174700000, "results_clicked": 5 },
+          { "query": "headphones", "timestamp": 1703261100000, "results_clicked": 2 }
+        ],
+        "clicks": [
+          {

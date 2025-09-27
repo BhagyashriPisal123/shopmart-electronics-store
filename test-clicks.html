@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Click Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        .test-button {
+            background: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+        }
+        .test-button:hover {
+            background: #45a049;
+        }
+        .product-card {
+            background: white;
+            color: black;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Click Test Page</h1>
+    
+    <button class="test-button" id="btn1">Test Button 1</button>
+    <button class="test-button" id="btn2">Test Button 2</button>
+    
+    <div class="product-card" id="card1">
+        <h3>Test Product Card</h3>
+        <p>Click me to test!</p>
+        <button class="test-button">Add to Cart</button>
+    </div>
+
+    <script>
+        console.log('🚀 Script loaded!');
+        
+        // Test 1: Direct button click
+        document.getElementById('btn1').addEventListener('click', function() {
+            alert('Button 1 clicked! ✅');
+            console.log('Button 1 clicked!');
+        });
+        
+        // Test 2: Button with function
+        document.getElementById('btn2').onclick = function() {
+            alert('Button 2 clicked! ✅');
+        };
+        
+        // Test 3: Product card click
+        document.getElementById('card1').addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON') {
+                alert('Add to Cart clicked! 🛒');
+            } else {
+                alert('Product card clicked! 📱');
+            }
+        });
+        
+        // Test 4: Global click listener
+        document.addEventListener('click', function(e) {
+            console.log('Clicked element:', e.target.tagName, e.target.className);
+        });
+        
+        console.log('✅ All event listeners added!');
+    </script>
+</body>
+</html>
