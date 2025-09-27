@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopMart - Electronics Store</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2c3e50;
+        }
+
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(255, 255, 255, 0.95); padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1400px; margin: 0 auto; display: flex;
+            align-items: center; justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex; align-items: center; gap: 1rem;
+            font-size: 1.25rem; font-weight: 700; color: #667eea;
+        }
+
+        .nav-actions { display: flex; gap: 1rem; }
+
+        .cart-icon, .user-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s; position: relative;
+        }
+
+        .cart-icon:hover, .user-avatar:hover {
+            background: rgba(102, 126, 234, 0.1); transform: translateY(-2px);
+        }
+
+        .cart-count {
+            position: absolute; top: -5px; right: -5px;
+            background: #f44336; color: white; border-radius: 50%;
+            width: 20px; height: 20px; font-size: 0.75rem;
+            display: none; align-items: center; justify-content: center;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 2rem; padding-top: 120px; }
+
+        .hero-section {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+            align-items: center; margin-bottom: 4rem;
+        }
+
+        .hero-title {
+            font-size: 3rem; font-weight: 800; color: white;
+            margin-bottom: 1.5rem; line-height: 1.2;
+        }
+
+        .gradient-text {
+            background: linear-gradient(45deg, #f093fb, white);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem; color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem; line-height: 1.8;
+        }
+
+        .hero-stats { display: flex; gap: 2rem; margin-bottom: 2rem; }
+
+        .stat-item { text-align: center; }
+        .stat-number { display: block; font-size: 1.5rem; font-weight: 700; color: white; }
+        .stat-label { font-size: 0.875rem; color: rgba(255, 255, 255, 0.8); }
+
+        .cta-button {
+            background: linear-gradient(45deg, #f093fb, #667eea);
+            color: white; border: none; padding: 1.5rem 3rem;
+            border-radius: 30px; font-size: 1.125rem; font-weight: 600;
+            cursor: pointer; transition: all 0.3s;
+        }
+
+        .cta-button:hover { transform: translateY(-3px); }
+
+        #heroCanvas { width: 100%; height: 400px; border-radius: 20px; }
+
+        .section-title {
+            font-size: 2rem; text-align: center; margin-bottom: 3rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .search-section {
+            background: rgba(255, 255, 255, 0.95); border-radius: 20px;
+            padding: 2rem; margin-bottom: 3rem;
+        }
+
+        .search-container { display: flex; gap: 1rem; margin-bottom: 2rem; }
+
+        .search-input {
+            flex: 1; padding: 1rem 1.5rem; border: 2px solid #e9ecef;
+            border-radius: 25px; font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none; border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white; border: none; padding: 1rem 2rem;
+            border-radius: 25px; cursor: pointer; font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover { transform: translateY(-2px); }
+
+        .filter-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem; border: 2px solid #e9ecef;
+            background: white; border-radius: 20px; cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white; border-color: transparent;
+        }
+
+        .products-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem; margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: white; border-radius: 20px; padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s; position: relative; cursor: pointer;
+        }
+
+        .product-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            width: 100%; height: 200px; border-radius: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-size: cover; background-position: center;
+            background-repeat: no-repeat; margin-bottom: 1rem;
+            position: relative; overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%; height: 100%; object-fit: cover;
+            border-radius: 15px; position: absolute; top: 0; left: 0;
+        }
+
+        .product-image .fallback-icon {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem; color: white; opacity: 0.8;
+            z-index: 1;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            opacity: 0; transition: opacity 0.3s;
+        }
+
+        .product-card:hover .product-image::before {
+            opacity: 1;
+        }
+
+        .product-icon {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem; color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-title { 
+            font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;
+            line-height: 1.3; height: 2.6rem; overflow: hidden;
+        }
+
+        .product-price { 
+            font-size: 1.3rem; font-weight: 700; color: #f44336; 
+            margin-bottom: 0.5rem; 
+        }
+
+        .product-original-price {
+            font-size: 1rem; color: #999; text-decoration: line-through;
+            margin-right: 0.5rem;
+        }
+
+        .product-discount {
+            background: #4CAF50; color: white; padding: 0.2rem 0.5rem;
+            border-radius: 10px; font-size: 0.8rem; font-weight: 600;
+        }
+
+        .product-rating { 
+            display: flex; align-items: center; gap: 0.5rem; 
+            margin-bottom: 1rem; 
+        }
+
+        .stars { color: #f39c12; font-size: 1rem; }
+        .rating-count { font-size: 0.9rem; color: #666; }
+
+        .product-features {
+            margin-bottom: 1rem;
+        }
+
+        .feature-tag {
+            display: inline-block; background: rgba(102, 126, 234, 0.1);
+            color: #667eea; padding: 0.2rem 0.5rem; border-radius: 10px;
+            font-size: 0.8rem; margin-right: 0.5rem; margin-bottom: 0.3rem;
+        }
+
+        .add-to-cart-btn {
+            width: 100%; background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white; border: none; padding: 1rem; border-radius: 12px;
+            font-weight: 600; cursor: pointer; transition: all 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+        }
+
+        .add-to-cart-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .recommendation-badge {
+            position: absolute; top: 1rem; right: 1rem;
+            background: linear-gradient(45deg, #f44336, #ff9800);
+            color: white; padding: 0.3rem 0.8rem; border-radius: 15px;
+            font-size: 0.7rem; font-weight: 600;
+            display: flex; align-items: center; gap: 0.3rem;
+        }
+
+        .stock-status {
+            position: absolute; top: 1rem; left: 1rem;
+            background: #4CAF50; color: white; padding: 0.3rem 0.8rem;
+            border-radius: 15px; font-size: 0.7rem; font-weight: 600;
+        }
+
+        .stock-status.low-stock { background: #ff9800; }
+        .stock-status.out-of-stock { background: #f44336; }
+
+        .toast {
+            position: fixed; top: 100px; right: 2rem; z-index: 5000;
+            background: white; border-radius: 12px; padding: 1rem 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transform: translateX(400px); transition: transform 0.3s;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .toast.show { transform: translateX(0); }
+
+        .results-info {
+            text-align: center; margin-bottom: 2rem; padding: 1rem;
+            background: rgba(255, 255, 255, 0.9); border-radius: 15px;
+        }
+
+        .load-more-btn {
+            display: block; margin: 2rem auto; padding: 1rem 2rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white; border: none; border-radius: 25px;
+            font-weight: 600; cursor: pointer; transition: all 0.3s;
+        }
+
+        .load-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Order Tracking Modal Styles */
+        .tracking-modal {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7); z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s;
+        }
+
+        .tracking-modal.show { opacity: 1; }
+
+        .modal-content {
+            background: white; border-radius: 20px; padding: 0;
+            max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;
+            transform: translateY(-50px); transition: transform 0.3s;
+        }
+
+        .tracking-modal.show .modal-content { transform: translateY(0); }
+
+        .modal-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white; padding: 1.5rem; border-radius: 20px 20px 0 0;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .close-btn {
+            background: none; border: none; color: white; font-size: 2rem;
+            cursor: pointer; padding: 0; line-height: 1;
+        }
+
+        .modal-body { padding: 2rem; }
+
+        .order-summary h3 { margin-bottom: 1.5rem; color: #333; }
+
+        .tracking-options { margin-bottom: 2rem; }
+
+        .track-btn {
+            width: 100%; background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white; border: none; padding: 1rem; border-radius: 12px;
+            font-weight: 600; cursor: pointer; font-size: 1rem; margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .track-btn:hover { transform: translateY(-2px); }
+
+        .track-existing { display: flex; gap: 1rem; }
+
+        .track-existing input {
+            flex: 1; padding: 0.75rem; border: 2px solid #e9ecef;
+            border-radius: 10px; font-size: 1rem;
+        }
+
+        .track-existing button {
+            background: #667eea; color: white; border: none; padding: 0.75rem 1.5rem;
+            border-radius: 10px; cursor: pointer; font-weight: 600;
+        }
+
+        .tracking-timeline {
+            margin: 1.5rem 0;
+        }
+
+        .timeline-step {
+            display: flex; align-items: center; margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .timeline-step:not(:last-child)::after {
+            content: ''; position: absolute; left: 20px; top: 40px;
+            width: 2px; height: 30px; background: #e9ecef;
+        }
+
+        .timeline-step.completed::after { background: #4CAF50; }
+        .timeline-step.active::after { background: #ff9800; }
+
+        .step-icon {
+            width: 40px; height: 40px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-weight: bold;
+            margin-right: 1rem; font-size: 1.2rem;
+        }
+
+        .timeline-step.completed .step-icon {
+            background: #4CAF50; color: white;
+        }
+
+        .timeline-step.active .step-icon {
+            background: #ff9800; color: white;
+        }
+
+        .timeline-step .step-icon {
+            background: #f5f5f5; color: #999;
+        }
+
+        .step-content h4 { margin: 0 0 0.25rem 0; color: #333; }
+
+        .step-title { font-weight: 600; margin-bottom: 0.25rem; }
+        .step-time { color: #666; font-size: 0.9rem; }
+
+        .delivery-info {
+            background: #f8f9ff; padding: 1.5rem; border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .delivery-info p { margin: 0.5rem 0; }
+
+        /* User Modal Additional Styles */
+        .user-info {
+            background: linear-gradient(45deg, #f093fb, #f5f7ff);
+            padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .user-info h3 { margin: 0 0 0.5rem 0; color: #333; }
+        .user-info p { margin: 0; color: #666; }
+
+        .order-history h3 { margin-bottom: 1rem; color: #333; }
+
+        .order-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #f8f9ff; padding: 1rem; border-radius: 12px;
+            margin-bottom: 1rem; border-left: 4px solid #667eea;
+        }
+
+        .order-id { font-weight: 600; color: #333; font-size: 0.9rem; }
+        .order-products { color: #666; margin: 0.25rem 0; }
+        .order-date { font-size: 0.85rem; color: #999; }
+
+        .order-status {
+            padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.8rem;
+            font-weight: 600; margin: 0.25rem 0;
+        }
+
+        .order-status.delivered { background: #d4edda; color: #155724; }
+        .order-status.shipped { background: #fff3cd; color: #856404; }
+        .order-status.processing { background: #cce5ff; color: #004085; }
+
+        .order-amount {
+            font-weight: 700; color: #f44336; font-size: 1.1rem;
+        }
+
+        .quick-actions {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem; margin-top: 2rem;
+        }
+
+        .action-btn {
+            background: white; border: 2px solid #667eea; color: #667eea;
+            padding: 1rem; border-radius: 12px; cursor: pointer;
+            font-weight: 600; transition: all 0.3s; text-align: center;
+        }
+
+        .action-btn:hover {
+            background: #667eea; color: white; transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .hero-section { grid-template-columns: 1fr; text-align: center; }
+            .hero-title { font-size: 2rem; }
+            .search-container { flex-direction: column; }
+            .products-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-shopping-cart"></i>
+                <span>ShopMart AI</span>
+            </div>
+            <div class="nav-actions">
+                <div class="cart-icon" onclick="handleCartClick()">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+                <div class="user-avatar" onclick="handleUserClick()">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section class="hero-section">
+            <div>
+                <h1 class="hero-title">
+                    <span class="gradient-text">AI-Powered</span>
+                    Shopping Experience
+                </h1>
+                <p class="hero-subtitle">
+                    Advanced machine learning algorithms that understand your preferences 
+                    and recommend products you'll love.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">10.0K</span>
+                        <span class="stat-label">Happy Customers</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">95</span>
+                        <span class="stat-label">% Accuracy</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50.0K</span>
+                        <span class="stat-label">Products</span>
+                    </div>
+                </div>
+                <button class="cta-button" onclick="scrollToProducts()">
+                    <i class="fas fa-rocket"></i> Explore Smart Recommendations
+                </button>
+            </div>
+            <div>
+                <canvas id="heroCanvas"></canvas>
+            </div>
+        </section>
+
+        <section class="search-section">
+            <h2 class="section-title">Smart Product Discovery</h2>
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" 
+                       placeholder="Search electronics, laptops, phones..." onkeyup="handleSearch()" onkeypress="handleKeyPress(event)">
+                <button class="search-btn" onclick="performSearch()">
+                    <i class="fas fa-magic"></i> AI Search
+                </button>
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="setFilter('all', this)">All Products</button>
+                <button class="filter-btn" onclick="setFilter('electronics', this)">Electronics</button>
+                <button class="filter-btn" onclick="setFilter('laptops', this)">Laptops</button>
+                <button class="filter-btn" onclick="setFilter('phones', this)">Phones</button>
+                <button class="filter-btn" onclick="setFilter('audio', this)">Audio</button>
+                <button class="filter-btn" onclick="setFilter('gaming', this)">Gaming</button>
+            </div>
+        </section>
+
+        <div class="results-info" id="resultsInfo" style="display: none;">
+            <h3 id="searchResultTitle"></h3>
+            <p id="searchResultCount"></p>
+        </div>
+
+        <section>
+            <h2 class="section-title" id="productsTitle">Recommended For You</h2>
+            <div class="products-grid" id="productsGrid"></div>
+            <button class="load-more-btn" id="loadMoreBtn" onclick="loadMoreProducts()" style="display: none;">
+                <i class="fas fa-plus"></i> Load More Electronics
+            </button>
+        </section>
+    </div>
+
+    <script>
+        // Global Variables
+        let cartCount = 0;
+        let currentFilter = 'all';
+        let currentSearchQuery = '';
+        let currentPage = 1;
+        let productsPerPage = 12;
+        
+        // Electronics Product Database with Images
+        let products = [
+            // Laptops
+            {
+                id: 1, name: "MacBook Pro 16-inch M2 Max", price: 249999, originalPrice: 279999, 
+                rating: 4.9, category: "laptops", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&h=300&fit=crop",
+                icon: "fas fa-laptop", description: "Ultimate performance laptop for professionals",
+                features: ["M2 Max Chip", "32GB RAM", "1TB SSD", "16-inch Liquid Retina"], 
+                discount: 11, inStock: true, stockCount: 25, isRecommended: true,
+                tags: ["apple", "macbook", "professional", "creative", "laptop", "m2"]
+            },
+            {
+                id: 2, name: "Dell XPS 13 Plus", price: 124999, originalPrice: 139999,
+                rating: 4.6, category: "laptops", subcategory: "electronics", 
+                image: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=500&h=300&fit=crop",
+                icon: "fas fa-laptop", description: "Premium ultrabook with stunning display",
+                features: ["Intel i7-1280P", "16GB RAM", "512GB SSD", "13.4-inch OLED"],
+                discount: 11, inStock: true, stockCount: 15, isRecommended: true,
+                tags: ["dell", "xps", "ultrabook", "oled", "laptop", "premium"]
+            },
+            {
+                id: 3, name: "HP Spectre x360 14", price: 89999, originalPrice: 99999,
+                rating: 4.5, category: "laptops", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1593642532842-98d0fd5ebc1a?w=500&h=300&fit=crop", 
+                icon: "fas fa-laptop", description: "2-in-1 convertible laptop with touch screen",
+                features: ["Intel i5-1235U", "16GB RAM", "512GB SSD", "Touch Screen"],
+                discount: 10, inStock: true, stockCount: 8, isRecommended: false,
+                tags: ["hp", "spectre", "2-in-1", "touchscreen", "laptop", "convertible"]
+            },
+            {
+                id: 4, name: "ASUS ROG Strix G15", price: 119999, originalPrice: 134999,
+                rating: 4.7, category: "laptops", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=500&h=300&fit=crop",
+                icon: "fas fa-laptop", description: "High-performance gaming laptop with RTX graphics",
+                features: ["AMD Ryzen 7", "16GB RAM", "RTX 3060", "144Hz Display"],
+                discount: 11, inStock: true, stockCount: 12, isRecommended: true,
+                tags: ["asus", "rog", "gaming", "laptop", "rtx", "high-performance"]
+            },
+            
+            // Smartphones
+            {
+                id: 5, name: "iPhone 15 Pro Max", price: 159900, originalPrice: 159900,
+                rating: 4.9, category: "phones", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500&h=300&fit=crop",
+                icon: "fas fa-mobile-alt", description: "Latest iPhone with titanium design and A17 Pro",
+                features: ["A17 Pro Chip", "256GB Storage", "48MP Camera", "USB-C"],
+                discount: 0, inStock: true, stockCount: 30, isRecommended: true,
+                tags: ["apple", "iphone", "smartphone", "titanium", "camera", "premium"]
+            },
+            {
+                id: 6, name: "Samsung Galaxy S24 Ultra", price: 129999, originalPrice: 144999,
+                rating: 4.8, category: "phones", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&h=300&fit=crop",
+                icon: "fas fa-mobile-alt", description: "Premium Android flagship with S Pen",
+                features: ["Snapdragon 8 Gen 3", "512GB Storage", "200MP Camera", "S Pen"],
+                discount: 10, inStock: true, stockCount: 20, isRecommended: true,
+                tags: ["samsung", "galaxy", "android", "s-pen", "camera", "flagship"]
+            },
+            {
+                id: 7, name: "Google Pixel 8 Pro", price: 84999, originalPrice: 94999,
+                rating: 4.7, category: "phones", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1574944985070-8f3ebc6b79d2?w=500&h=300&fit=crop",
+                icon: "fas fa-mobile-alt", description: "Pure Android experience with AI photography",
+                features: ["Google Tensor G3", "256GB Storage", "AI Photography", "Pure Android"],
+                discount: 11, inStock: true, stockCount: 18, isRecommended: false,
+                tags: ["google", "pixel", "android", "ai", "photography", "pure"]
+            },
+            {
+                id: 8, name: "OnePlus 12", price: 64999, originalPrice: 69999,
+                rating: 4.6, category: "phones", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1580910051074-3eb694886505?w=500&h=300&fit=crop",
+                icon: "fas fa-mobile-alt", description: "Flagship killer with ultra-fast charging",
+                features: ["Snapdragon 8 Gen 3", "256GB Storage", "100W Charging", "120Hz OLED"],
+                discount: 7, inStock: true, stockCount: 25, isRecommended: false,
+                tags: ["oneplus", "flagship", "fast-charging", "oled", "performance"]
+            },
+
+            // Audio Devices
+            {
+                id: 9, name: "Sony WH-1000XM5", price: 29999, originalPrice: 34999,
+                rating: 4.8, category: "audio", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500&h=300&fit=crop",
+                icon: "fas fa-headphones", description: "Industry-leading noise canceling headphones",
+                features: ["30hr Battery", "Industry-leading ANC", "Hi-Res Audio", "Quick Charge"],
+                discount: 14, inStock: true, stockCount: 40, isRecommended: true,
+                tags: ["sony", "headphones", "noise-canceling", "wireless", "premium"]
+            },
+            {
+                id: 10, name: "Apple AirPods Pro (2nd Gen)", price: 24900, originalPrice: 26900,
+                rating: 4.7, category: "audio", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=500&h=300&fit=crop",
+                icon: "fas fa-headphones", description: "Premium wireless earbuds with spatial audio",
+                features: ["Active ANC", "Spatial Audio", "MagSafe Charging", "6hr Battery"],
+                discount: 7, inStock: true, stockCount: 35, isRecommended: true,
+                tags: ["apple", "airpods", "wireless", "earbuds", "spatial-audio"]
+            },
+            {
+                id: 11, name: "Bose QuietComfort Earbuds", price: 22999, originalPrice: 25999,
+                rating: 4.6, category: "audio", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&h=300&fit=crop",
+                icon: "fas fa-headphones", description: "True wireless earbuds with world-class ANC",
+                features: ["World-class ANC", "6hr Battery", "IPX4 Water Resistant", "Touch Controls"],
+                discount: 12, inStock: true, stockCount: 22, isRecommended: false,
+                tags: ["bose", "earbuds", "noise-canceling", "wireless", "water-resistant"]
+            },
+
+            // Gaming
+            {
+                id: 12, name: "PlayStation 5", price: 54990, originalPrice: 54990,
+                rating: 4.9, category: "gaming", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=500&h=300&fit=crop",
+                icon: "fas fa-gamepad", description: "Next-gen gaming console with ultra-fast SSD",
+                features: ["Ultra-fast SSD", "Ray Tracing", "3D Audio", "DualSense Controller"],
+                discount: 0, inStock: true, stockCount: 5, isRecommended: true,
+                tags: ["sony", "playstation", "gaming", "console", "next-gen"]
+            },
+            {
+                id: 13, name: "Xbox Series X", price: 52990, originalPrice: 52990,
+                rating: 4.8, category: "gaming", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=500&h=300&fit=crop",
+                icon: "fas fa-gamepad", description: "Most powerful Xbox ever with 4K gaming",
+                features: ["4K Gaming", "120fps", "1TB SSD", "Quick Resume"],
+                discount: 0, inStock: true, stockCount: 8, isRecommended: true,
+                tags: ["microsoft", "xbox", "gaming", "console", "4k"]
+            },
+            {
+                id: 14, name: "Logitech G Pro X Superlight", price: 14999, originalPrice: 16999,
+                rating: 4.7, category: "gaming", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1527814050087-3793815479db?w=500&h=300&fit=crop",
+                icon: "fas fa-mouse", description: "Ultra-lightweight wireless gaming mouse",
+                features: ["25,600 DPI", "63g Ultra-light", "70hr Battery", "HERO Sensor"],
+                discount: 12, inStock: true, stockCount: 30, isRecommended: false,
+                tags: ["logitech", "gaming", "mouse", "wireless", "lightweight"]
+            },
+
+            // More Electronics
+            {
+                id: 15, name: "iPad Pro 12.9-inch", price: 112900, originalPrice: 119900,
+                rating: 4.8, category: "electronics", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500&h=300&fit=crop",
+                icon: "fas fa-tablet-alt", description: "Ultimate iPad experience with M2 chip",
+                features: ["M2 Chip", "12.9-inch Liquid Retina", "Apple Pencil Support", "5G"],
+                discount: 6, inStock: true, stockCount: 15, isRecommended: true,
+                tags: ["apple", "ipad", "tablet", "m2", "pencil", "creative"]
+            },
+            {
+                id: 16, name: "Samsung Galaxy Watch6 Classic", price: 36999, originalPrice: 39999,
+                rating: 4.5, category: "electronics", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=300&fit=crop",
+                icon: "fas fa-clock", description: "Premium smartwatch with rotating bezel",
+                features: ["Rotating Bezel", "Health Monitoring", "GPS", "Water Resistant"],
+                discount: 8, inStock: true, stockCount: 20, isRecommended: false,
+                tags: ["samsung", "smartwatch", "health", "gps", "rotating-bezel"]
+            },
+            {
+                id: 17, name: "Canon EOS R6 Mark II", price: 219999, originalPrice: 239999,
+                rating: 4.9, category: "electronics", subcategory: "electronics", 
+                image: "https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=500&h=300&fit=crop",
+                icon: "fas fa-camera", description: "Professional mirrorless camera for creators",
+                features: ["24.2MP Full-frame", "In-body Stabilization", "4K Video", "Dual Card Slots"],
+                discount: 8, inStock: true, stockCount: 10, isRecommended: true,
+                tags: ["canon", "camera", "mirrorless", "professional", "4k", "photography"]
+            },
+            {
+                id: 18, name: "DJI Air 3", price: 109900, originalPrice: 119900,
+                rating: 4.7, category: "electronics", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?w=500&h=300&fit=crop",
+                icon: "fas fa-helicopter", description: "Dual-camera drone with intelligent features",
+                features: ["Dual 4K Cameras", "46min Flight Time", "Obstacle Avoidance", "10km Range"],
+                discount: 8, inStock: true, stockCount: 12, isRecommended: false,
+                tags: ["dji", "drone", "camera", "4k", "aerial", "photography"]
+            },
+            {
+                id: 19, name: "LG C3 55-inch OLED TV", price: 139999, originalPrice: 159999,
+                rating: 4.8, category: "electronics", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=500&h=300&fit=crop",
+                icon: "fas fa-tv", description: "Premium OLED smart TV with perfect blacks",
+                features: ["OLED Display", "4K 120Hz", "Dolby Vision", "webOS Smart TV"],
+                discount: 13, inStock: true, stockCount: 8, isRecommended: true,
+                tags: ["lg", "oled", "tv", "4k", "smart-tv", "gaming"]
+            },
+            {
+                id: 20, name: "Nintendo Switch OLED", price: 34999, originalPrice: 37999,
+                rating: 4.6, category: "gaming", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=300&fit=crop",
+                icon: "fas fa-gamepad", description: "Portable gaming console with vibrant OLED screen",
+                features: ["7-inch OLED", "Handheld/Docked", "64GB Storage", "Enhanced Audio"],
+                discount: 8, inStock: true, stockCount: 25, isRecommended: false,
+                tags: ["nintendo", "switch", "portable", "gaming", "oled", "handheld"]
+            },
+            {
+                id: 21, name: "Tesla Model S Plaid Wheels", price: 45999, originalPrice: 49999,
+                rating: 4.4, category: "electronics", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=500&h=300&fit=crop",
+                icon: "fas fa-car", description: "High-performance wheels for Tesla Model S",
+                features: ["21-inch Wheels", "Carbon Fiber", "Michelin Tires", "Aerodynamic Design"],
+                discount: 8, inStock: true, stockCount: 6, isRecommended: false,
+                tags: ["tesla", "wheels", "carbon-fiber", "performance", "automotive"]
+            },
+            {
+                id: 22, name: "MacBook Air M2", price: 114900, originalPrice: 119900,
+                rating: 4.7, category: "laptops", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&h=300&fit=crop",
+                icon: "fas fa-laptop", description: "Incredibly thin and light laptop with M2 chip",
+                features: ["M2 Chip", "8GB RAM", "256GB SSD", "13.6-inch Liquid Retina"],
+                discount: 4, inStock: true, stockCount: 30, isRecommended: true,
+                tags: ["apple", "macbook", "air", "m2", "thin", "light", "portable"]
+            },
+            {
+                id: 23, name: "Razer DeathAdder V3 Pro", price: 11999, originalPrice: 13999,
+                rating: 4.5, category: "gaming", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1616588589676-62b3bd4ff6d2?w=500&h=300&fit=crop",
+                icon: "fas fa-mouse", description: "Wireless gaming mouse with Focus Pro sensor",
+                features: ["Focus Pro 30K Sensor", "90hr Battery", "Hyperspeed Wireless", "Ergonomic"],
+                discount: 14, inStock: true, stockCount: 18, isRecommended: false,
+                tags: ["razer", "gaming", "mouse", "wireless", "sensor", "pro"]
+            },
+            {
+                id: 24, name: "AirPods Max", price: 59900, originalPrice: 59900,
+                rating: 4.6, category: "audio", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1608156639585-b3a08becb3ad?w=500&h=300&fit=crop",
+                icon: "fas fa-headphones", description: "Over-ear headphones with computational audio",
+                features: ["Computational Audio", "20hr Battery", "Spatial Audio", "Premium Materials"],
+                discount: 0, inStock: true, stockCount: 12, isRecommended: true,
+                tags: ["apple", "headphones", "premium", "spatial-audio", "over-ear"]
+            },
+            {
+                id: 25, name: "Microsoft Surface Pro 9", price: 99999, originalPrice: 109999,
+                rating: 4.4, category: "laptops", subcategory: "electronics",
+                image: "https://images.unsplash.com/photo-1588702547923-7093a8b03cbf?w=500&h=300&fit=crop",
+                icon: "fas fa-tablet-alt", description: "2-in-1 laptop tablet with Surface Pen support",
+                features: ["Intel i5", "8GB RAM", "256GB SSD", "13-inch PixelSense", "Surface Pen"],
+                discount: 9, inStock: true, stockCount: 14, isRecommended: false,
+                tags: ["microsoft", "surface", "2-in-1", "tablet", "laptop", "pen"]
+            }
+        ];
+
+        // Initialize App
+        function initApp() {
+            displayProducts();
+            init3D();
+            console.log('✅ Electronics store loaded with', products.length, 'products!');
+        }
+
+        // Display Products with Search/Filter Logic
+        function displayProducts() {
+            let filteredProducts = products;
+            
+            // Apply search filter
+            if (currentSearchQuery) {
+                filteredProducts = products.filter(product =>
+                    product.name.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
+                    product.tags.some(tag => tag.toLowerCase().includes(currentSearchQuery.toLowerCase())) ||
+                    product.description.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
+                    product.category.toLowerCase().includes(currentSearchQuery.toLowerCase())
+                );
+            }
+            
+            // Apply category filter
+            if (currentFilter !== 'all') {
+                filteredProducts = filteredProducts.filter(product =>
+                    product.category === currentFilter || 
+                    product.subcategory === currentFilter ||
+                    product.tags.includes(currentFilter)
+                );
+            }
+            
+            // Sort by AI recommendations first, then by rating
+            filteredProducts.sort((a, b) => {
+                if (a.isRecommended && !b.isRecommended) return -1;
+                if (!a.isRecommended && b.isRecommended) return 1;
+                return b.rating - a.rating;
+            });
+            
+            // Update UI based on results
+            updateResultsInfo(filteredProducts);
+            
+            // Paginate results
+            const startIndex = 0;
+            const endIndex = currentPage * productsPerPage;
+            const productsToShow = filteredProducts.slice(startIndex, endIndex);
+            
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = productsToShow.map(product => createProductHTML(product)).join('');
+            
+            // Show/hide load more button
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            if (endIndex < filteredProducts.length) {
+                loadMoreBtn.style.display = 'block';
+                loadMoreBtn.innerHTML = `<i class="fas fa-plus"></i> Load More (${filteredProducts.length - endIndex} remaining)`;
+            } else {
+                loadMoreBtn.style.display = 'none';
+            }
+        }
+
+        // Create Product HTML with Images
+        function createProductHTML(product) {
+            const discountBadge = product.discount > 0 ? 
+                `<span class="product-discount">${product.discount}% OFF</span>` : '';
+                
+            const stockStatus = product.stockCount > 10 ? 'In Stock' : 
+                               product.stockCount > 0 ? 'Low Stock' : 'Out of Stock';
+            const stockClass = product.stockCount > 10 ? 'stock-status' : 
+                             product.stockCount > 0 ? 'stock-status low-stock' : 'stock-status out-of-stock';
+                             
+            const recommendationBadge = product.isRecommended ? 
+                `<div class="recommendation-badge">
+                    <i class="fas fa-star"></i> AI Pick
+                </div>` : '';
+
+            return `
+                <div class="product-card" onclick="viewProduct(${product.id})">
+                    ${recommendationBadge}
+                    <div class="${stockClass}">${stockStatus}</div>
+                    
+                    <div class="product-image" style="background-image: url('${product.image}')">
+                        <img src="${product.image}" alt="${product.name}" 
+                             onload="this.style.opacity=1" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <div class="fallback-icon" style="display: none;">
+                            <i class="${product.icon}"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="product-title">${product.name}</div>
+                    
+                    <div class="product-price">
+                        ₹${product.price.toLocaleString()}
+                        ${product.originalPrice && product.originalPrice !== product.price ? 
+                            `<span class="product-original-price">₹${product.originalPrice.toLocaleString()}</span>
+                             ${discountBadge}` : ''
+                        }
+                    </div>
+                    
+                    <div class="product-rating">
+                        <div class="stars">
+                            ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))}
+                        </div>
+                        <span class="rating-count">(${product.rating}) • ${Math.floor(Math.random() * 500 + 100)} reviews</span>
+                    </div>
+                    
+                    <div class="product-features">
+                        ${product.features.slice(0, 2).map(feature => 
+                            `<span class="feature-tag">${feature}</span>`
+                        ).join('')}
+                    </div>
+                    
+                    <button class="add-to-cart-btn" onclick="addToCart(${product.id}, event)" 
+                            ${product.stockCount === 0 ? 'disabled' : ''}>
+                        <i class="fas fa-cart-plus"></i> 
+                        ${product.stockCount === 0 ? 'Out of Stock' : 'Add to Cart'}
+                    </button>
+                </div>
+            `;
+        }
+
+        // Update Results Info
+        function updateResultsInfo(filteredProducts) {
+            const resultsInfo = document.getElementById('resultsInfo');
+            const searchResultTitle = document.getElementById('searchResultTitle');
+            const searchResultCount = document.getElementById('searchResultCount');
+            const productsTitle = document.getElementById('productsTitle');
+            
+            if (currentSearchQuery || currentFilter !== 'all') {
+                resultsInfo.style.display = 'block';
+                
+                let title = '';
+                if (currentSearchQuery && currentFilter !== 'all') {
+                    title = `"${currentSearchQuery}" in ${currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1)}`;
+                } else if (currentSearchQuery) {
+                    title = `"${currentSearchQuery}"`;
+                } else {
+                    title = currentFilter.charAt(0).toUpperCase() + currentFilter.slice(1);
+                }
+                
+                searchResultTitle.textContent = `Search Results for ${title}`;
+                searchResultCount.textContent = `Found ${filteredProducts.length} products`;
+                productsTitle.textContent = `${filteredProducts.length} Products Found`;
+            } else {
+                resultsInfo.style.display = 'none';
+                productsTitle.textContent = 'Recommended For You';
+            }
+        }
+
+        // Handle Search Input
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            currentSearchQuery = query;
+            currentPage = 1;
+            displayProducts();
+        }
+
+        // Handle Enter Key Press
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                performSearch();
+            }
+        }
+
+        // Perform Search
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            currentSearchQuery = query;
+            currentPage = 1;
+            displayProducts();
+            
+            if (query) {
+                showToast(`🔍 Searching for "${query}" - Found electronics!`);
+                console.log('🔍 Search performed:', query);
+            }
+        }
+
+        // Set Category Filter
+        function setFilter(category, button) {
+            currentFilter = category;
+            currentPage = 1;
+            
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            displayProducts();
+            
+            const categoryName = category === 'all' ? 'All Products' : 
+                               category.charAt(0).toUpperCase() + category.slice(1);
+            showToast(`📱 Showing ${categoryName}`);
+            console.log('🔍 Filter changed to:', category);
+        }
+
+        // Load More Products
+        function loadMoreProducts() {
+            currentPage++;
+            displayProducts();
+            showToast(`📦 Loading more products...`);
+        }
+
+        // Scroll to Products
+        function scrollToProducts() {
+            document.querySelector('.products-grid').scrollIntoView({ behavior: 'smooth' });
+            showToast('🚀 Scrolling to electronics catalog');
+            console.log('🚀 Scrolling to products');
+        }
+
+        // Add to Cart Function
+        function addToCart(productId, event) {
+            event.stopPropagation();
+            const product = products.find(p => p.id === productId);
+            
+            if (product.stockCount === 0) {
+                showToast(`❌ ${product.name} is out of stock`);
+                return;
+            }
+            
+            cartCount++;
+            document.getElementById('cartCount').textContent = cartCount;
+            document.getElementById('cartCount').style.display = 'flex';
+            
+            showToast(`🛒 ${product.name} added to cart! (₹${product.price.toLocaleString()})`);
+            
+            // Button animation
+            event.target.style.transform = 'scale(0.95)';
+            setTimeout(() => event.target.style.transform = 'scale(1)', 150);
+            
+            console.log('✅ Product added:', product.name, '- Price:', product.price);
+        }
+
+        // View Product Details
+        function viewProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            showToast(`👀 Viewing ${product.name} - ${product.features.join(', ')}`);
+            console.log('👀 Viewing product:', product.name, product);
+        }
+
+        // Handle Cart Click
+        function handleCartClick() {
+            if (cartCount > 0) {
+                showOrderTrackingModal();
+            } else {
+                showToast(`🛒 Shopping Cart: ${cartCount} items (Electronics)`);
+            }
+            console.log('🛒 Cart clicked, items:', cartCount);
+        }
+
+        // Show Order Tracking Modal
+        function showOrderTrackingModal() {
+            const modal = document.createElement('div');
+            modal.className = 'tracking-modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>📦 Order Tracking</h2>
+                        <button class="close-btn" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="order-summary">
+                            <h3>Your Cart (${cartCount} items)</h3>
+                            <div class="tracking-options">
+                                <button class="track-btn" onclick="placeOrder()">
+                                    <i class="fas fa-shopping-cart"></i> Place Order & Get Tracking ID
+                                </button>
+                                <div class="track-existing">
+                                    <input type="text" placeholder="Enter existing tracking ID..." id="trackingInput">
+                                    <button onclick="trackOrder()">Track Order</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tracking-info" id="trackingInfo" style="display:none;">
+                            <h3>Order Status</h3>
+                            <div class="tracking-timeline">
+                                <div class="timeline-step completed">
+                                    <div class="step-icon">✓</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Order Confirmed</div>
+                                        <div class="step-time">Today, 10:30 AM</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-step completed">
+                                    <div class="step-icon">✓</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Payment Processed</div>
+                                        <div class="step-time">Today, 10:35 AM</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-step active">
+                                    <div class="step-icon">📦</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Being Packed</div>
+                                        <div class="step-time">In Progress</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-step">
+                                    <div class="step-icon">🚚</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Shipped</div>
+                                        <div class="step-time">Expected: Tomorrow</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-step">
+                                    <div class="step-icon">🏠</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Delivered</div>
+                                        <div class="step-time">Expected: 2-3 days</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="delivery-info">
+                                <p><strong>Estimated Delivery:</strong> September 29, 2025</p>
+                                <p><strong>Tracking ID:</strong> SME${Math.random().toString(36).substr(2, 9).toUpperCase()}</p>
+                                <p><strong>Courier Partner:</strong> ShopMart Express</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            setTimeout(() => modal.classList.add('show'), 100);
+        }
+
+        // Place Order Function
+        function placeOrder() {
+            const trackingId = 'SME' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            document.getElementById('trackingInfo').style.display = 'block';
+            showToast(`✅ Order placed! Tracking ID: ${trackingId}`);
+            
+            // Simulate order tracking updates
+            setTimeout(() => {
+                showToast('📦 Your order is being packed!');
+            }, 3000);
+        }
+
+        // Track Order Function
+        function trackOrder() {
+            const trackingId = document.getElementById('trackingInput').value.trim();
+            if (trackingId) {
+                document.getElementById('trackingInfo').style.display = 'block';
+                showToast(`🔍 Tracking order: ${trackingId}`);
+            } else {
+                showToast('❌ Please enter a valid tracking ID');
+            }
+        }
+
+        // Close Modal Function
+        function closeModal() {
+            const modal = document.querySelector('.tracking-modal');
+            if (modal) {
+                modal.classList.remove('show');
+                setTimeout(() => modal.remove(), 300);
+            }
+        }
+
+        // Handle User Click  
+        function handleUserClick() {
+            showUserModal();
+            console.log('👤 User avatar clicked');
+        }
+
+        // Show User Modal with Order History
+        function showUserModal() {
+            const modal = document.createElement('div');
+            modal.className = 'tracking-modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>👤 My Account</h2>
+                        <button class="close-btn" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="user-info">
+                            <h3>Welcome back, Electronics Enthusiast!</h3>
+                            <p>📧 user@shopmart.com | 📞 +91 98765 43210</p>
+                        </div>
+                        
+                        <div class="order-history">
+                            <h3>📦 Recent Orders</h3>
+                            <div class="order-item">
+                                <div class="order-details">
+                                    <div class="order-id">Order #SME789ABC123</div>
+                                    <div class="order-products">MacBook Pro 16-inch M2 Max</div>
+                                    <div class="order-status delivered">✅ Delivered</div>
+                                    <div class="order-date">Delivered on Sep 20, 2025</div>
+                                </div>
+                                <div class="order-amount">₹2,49,999</div>
+                            </div>
+                            
+                            <div class="order-item">
+                                <div class="order-details">
+                                    <div class="order-id">Order #SME456DEF789</div>
+                                    <div class="order-products">Sony WH-1000XM5, iPad Pro 12.9"</div>
+                                    <div class="order-status shipped">🚚 Shipped</div>
+                                    <div class="order-date">Expected: Sep 28, 2025</div>
+                                </div>
+                                <div class="order-amount">₹1,42,899</div>
+                            </div>
+                            
+                            <div class="order-item">
+                                <div class="order-details">
+                                    <div class="order-id">Order #SME123GHI456</div>
+                                    <div class="order-products">iPhone 15 Pro Max, AirPods Pro</div>
+                                    <div class="order-status processing">📦 Processing</div>
+                                    <div class="order-date">Placed on Sep 25, 2025</div>
+                                </div>
+                                <div class="order-amount">₹1,84,800</div>
+                            </div>
+                        </div>
+                        
+                        <div class="quick-actions">
+                            <button class="action-btn" onclick="showToast('🔍 Opening order tracking...')">
+                                <i class="fas fa-search"></i> Track All Orders
+                            </button>
+                            <button class="action-btn" onclick="showToast('🔄 Checking for returns...')">
+                                <i class="fas fa-undo"></i> Returns & Exchanges
+                            </button>
+                            <button class="action-btn" onclick="showToast('📋 Downloading invoices...')">
+                                <i class="fas fa-file-invoice"></i> Download Invoices
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            setTimeout(() => modal.classList.add('show'), 100);
+        }
+
+        // Show Toast Notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        }
+
+        // Initialize 3D Animation
+        function init3D() {
+            const canvas = document.getElementById('heroCanvas');
+            if (!window.THREE) return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+            
+            renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+            renderer.setClearColor(0x000000, 0);
+
+            // Create electronic device shapes
+            const devices = [];
+            
+            // Laptop shapes
+            for (let i = 0; i < 5; i++) {
+                const geometry = new THREE.BoxGeometry(1.5, 0.1, 1);
+                const material = new THREE.MeshBasicMaterial({ color: 0x667eea, wireframe: true });
+                const laptop = new THREE.Mesh(geometry, material);
+                
+                laptop.position.set(
+                    (Math.random() - 0.5) * 8,
+                    (Math.random() - 0.5) * 8,
+                    (Math.random() - 0.5) * 8
+                );
+                laptop.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+                scene.add(laptop);
+                devices.push(laptop);
+            }
+            
+            // Phone shapes
+            for (let i = 0; i < 4; i++) {
+                const geometry = new THREE.BoxGeometry(0.5, 1, 0.1);
+                const material = new THREE.MeshBasicMaterial({ color: 0x764ba2, wireframe: true });
+                const phone = new THREE.Mesh(geometry, material);
+                
+                phone.position.set(
+                    (Math.random() - 0.5) * 8,
+                    (Math.random() - 0.5) * 8,
+                    (Math.random() - 0.5) * 8
+                );
+                scene.add(phone);
+                devices.push(phone);
+            }
+
+            camera.position.z = 6;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                devices.forEach(device => {
+                    device.rotation.x += 0.005;
+                    device.rotation.y += 0.01;
+                    device.position.y += Math.sin(Date.now() * 0.001 + device.position.x) * 0.002;
+                });
+                renderer.render(scene, camera);
+            }
+            animate();
+            
+            // Handle resize
+            window.addEventListener('resize', () => {
+                if (canvas.offsetWidth > 0) {
+                    camera.aspect = canvas.offsetWidth / canvas.offsetHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+                }
+            });
+        }
+
+        // Auto-suggest when typing "electronics"
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const value = e.target.value.toLowerCase();
+            if (value.includes('electronic') && currentFilter === 'all') {
+                setTimeout(() => {
+                    if (document.getElementById('searchInput').value.toLowerCase().includes('electronic')) {
+                        setFilter('electronics', document.querySelectorAll('.filter-btn')[1]);
+                    }
+                }, 500);
+            }
+        });
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
